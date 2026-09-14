@@ -14,7 +14,7 @@ HBM 是 GPU 的大显存，容量大但慢，访问代价高；SRAM 是片上快
 ## FlashAttention 的核心思想
 FlashAttention 不去实际生成并保存完整的 N×N 分数矩阵，而是把计算切成小块，边算边汇总。中间的小块结果尽量留在 SRAM 里，算完就丢掉，只保留最终输出和少量统计量。它没有减少计算量，复杂度仍然是 O(N²)，真正省的是显存占用和 HBM 数据搬运。
 
-## 它是如何解决 Attention 问题的
+## FlashAttention 是如何解决 Attention 问题的
 标准 Attention 是先把完整 score 矩阵算出来，再统一做 Softmax，再乘 V。FlashAttention 改成用 tiling 把 Q、K、V 分块，一次只处理一小块，再用 online softmax 在分块过程中完成 Softmax 归约。中间 score tile 留在 SRAM，不写回 HBM，最后只把最终输出写回 HBM。这样显存峰值下降，HBM 往返减少，长序列更容易跑起来。
 
 ## Tiling 分块
