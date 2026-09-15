@@ -37,5 +37,8 @@ tile 不是越小越好：tile 小省 SRAM，但块数多、调度开销大；ti
 
 Online Softmax 不用等完整一行，它边处理小块，边维护当前最大值 m 和当前指数和 l。来新块时，先更新全局最大值，如果最大值变了，就把旧的 l 和输出累加器按比例缩放，再加上新块的贡献。最后得到的结果和标准 Softmax 一样。
 
+<img width="1240" height="848" alt="image" src="https://github.com/user-attachments/assets/1befa0ea-47bc-4697-bd99-1e6fbfdc7849" />
+
+
 
   
